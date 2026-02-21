@@ -49,7 +49,12 @@ export async function analyzeStyle(
     stream: false,
   });
 
-  return completion.choices[0].message.content;
+  const content = completion.choices?.[0]?.message?.content;
+  if (!content) {
+    throw new Error("AI advisor failed to generate a response");
+  }
+
+  return content;
 }
 
 /**
@@ -71,5 +76,10 @@ export async function extractPrompt(advice: string) {
     temperature: 0.3,
   });
 
-  return completion.choices[0].message.content;
+  const content = completion.choices?.[0]?.message?.content;
+  if (!content) {
+    return ""; // Return empty string if no prompt could be extracted
+  }
+
+  return content;
 }

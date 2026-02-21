@@ -28,13 +28,16 @@ export function ForgotPasswordForm() {
   const onSubmit = async (data: ForgotPasswordInput) => {
     setIsLoading(true);
     try {
-      await fetch("/api/auth/forgot-password", {
+      const response = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      // API_ROUTES.md says it always returns 200
+      if (!response.ok) {
+        throw new Error("Failed to send reset link");
+      }
+
       setIsSubmitted(true);
     } catch (error) {
       console.error("Forgot password error:", error);

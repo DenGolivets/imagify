@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock, User, Loader2 } from "lucide-react";
 import { registerSchema, type RegisterInput } from "@/lib/validations/auth";
@@ -14,6 +15,7 @@ import { Label } from "@/components/ui/label";
 export function RegisterForm() {
   const { loginWithGoogle, isLoading: authLoading } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -40,11 +42,20 @@ export function RegisterForm() {
 
       // After successful registration, sign in
       const { signIn } = await import("next-auth/react");
-      await signIn("credentials", {
+      const signInResult = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: "/studio",
+        redirect: false,
       });
+
+      if (signInResult?.error) {
+        throw new Error(
+          "Account created, but could not sign in automatically. Please log in.",
+        );
+      }
+
+      router.push("/studio");
+      router.refresh();
     } catch (error) {
       console.error("Registration error:", error);
       const { toast } = await import("react-hot-toast");

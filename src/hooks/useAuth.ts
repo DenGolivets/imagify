@@ -52,8 +52,10 @@ export function useAuth() {
   const logout = async () => {
     setIsLoading(true);
     try {
-      await signOut({ callbackUrl: "/" });
+      await signOut({ redirect: false });
       toast.success("Logged out successfully.");
+      router.push("/");
+      router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
       toast.error("Failed to log out.");

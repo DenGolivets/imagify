@@ -40,7 +40,7 @@ export async function generateTryOn(
     },
   ]);
 
-  const response = await result.response;
+  const response = result.response;
   return response;
 }
 
@@ -49,6 +49,6 @@ export async function generateTryOn(
  */
 export async function generateFromPrompt(prompt: string) {
   const result = await geminiModel.generateContent(prompt);
-  const response = await result.response;
+  const response = result.response;
   return response;
 }
