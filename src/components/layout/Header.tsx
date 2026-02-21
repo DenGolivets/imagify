@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,6 +27,8 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,12 +41,51 @@ export function Header() {
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
+
+      // Focus the menu container or first element when opened
+      const focusableElements = menuRef.current?.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusableElements && focusableElements.length > 0) {
+        (focusableElements[0] as HTMLElement).focus();
+      } else {
+        menuRef.current?.focus();
+      }
+
+      const handleKeydown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsMobileMenuOpen(false);
+        }
+        if (e.key === "Tab") {
+          if (!menuRef.current) return;
+          const focusable = menuRef.current.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          );
+          if (focusable.length === 0) return;
+          const first = focusable[0] as HTMLElement;
+          const last = focusable[focusable.length - 1] as HTMLElement;
+
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              last.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === last) {
+              first.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      };
+
+      window.addEventListener("keydown", handleKeydown);
+      return () => window.removeEventListener("keydown", handleKeydown);
     } else {
       document.body.style.overflow = "unset";
+      // Restore focus to the button when closing
+      menuButtonRef.current?.focus();
     }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
   }, [isMobileMenuOpen]);
 
   return (
@@ -82,29 +123,29 @@ export function Header() {
         {/* Desktop Auth/Actions */}
         <div className="hidden md:flex items-center gap-4">
           {/* Example Auth State (assuming logged out for now) */}
-          <Link href="/login">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/5"
-            >
-              Log in
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button variant="primary" size="sm">
-              Get Started
-            </Button>
-          </Link>
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/5"
+          >
+            <Link href="/login">Log in</Link>
+          </Button>
+          <Button asChild variant="primary" size="sm">
+            <Link href="/register">Get Started</Link>
+          </Button>
         </div>
 
         {/* Mobile Hamburger */}
         <div className="md:hidden flex items-center gap-4">
           <Button
+            ref={menuButtonRef}
             variant="ghost"
             size="icon"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="text-white hover:bg-white/5"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? (
               <X className="size-6" />
@@ -126,6 +167,8 @@ export function Header() {
               "fixed inset-x-0 bottom-0 z-40 bg-background md:hidden overflow-y-auto pb-10",
               isScrolled ? "top-16" : "top-20",
             )}
+            ref={menuRef}
+            tabIndex={-1}
           >
             <nav className="flex flex-col p-8 gap-6">
               {NAV_LINKS.map((link) => (
@@ -145,19 +188,23 @@ export function Header() {
                 </Link>
               ))}
               <div className="h-px bg-white/10 my-4" />
-              <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button variant="primary" className="w-full text-lg h-14">
-                  Get Started
-                </Button>
-              </Link>
-              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button
-                  variant="outline"
-                  className="w-full text-lg h-14 border-white/10"
+              <Button asChild variant="primary" className="w-full text-lg h-14">
+                <Link
+                  href="/register"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  Get Started
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="w-full text-lg h-14 border-white/10"
+              >
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
                   Log in
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </nav>
           </motion.div>
         )}
