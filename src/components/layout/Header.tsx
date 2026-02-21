@@ -11,7 +11,12 @@ import {
   Sparkles,
   MessageCircle,
   BarChart3,
+  User as UserIcon,
+  LogOut,
+  LayoutDashboard,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { SwingingLogo } from "./SwingingLogo";
 import { cn } from "@/lib/utils";
@@ -29,6 +34,9 @@ export function Header() {
   const pathname = usePathname();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const { data: session, status } = useSession();
+  const { logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -122,18 +130,41 @@ export function Header() {
 
         {/* Desktop Auth/Actions */}
         <div className="hidden md:flex items-center gap-4">
-          {/* Example Auth State (assuming logged out for now) */}
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/5"
-          >
-            <Link href="/login">Log in</Link>
-          </Button>
-          <Button asChild variant="primary" size="sm">
-            <Link href="/register">Get Started</Link>
-          </Button>
+          {status === "loading" ? (
+            <div className="size-8 rounded-full bg-white/5 animate-pulse" />
+          ) : session ? (
+            <div className="flex items-center gap-3">
+              <Link
+                href="/studio"
+                className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+              >
+                {session.user?.name || "User"}
+              </Link>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/5"
+                onClick={() => logout()}
+                title="Log out"
+              >
+                <LogOut className="size-4" />
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="text-white hover:bg-white/5"
+              >
+                <Link href="/login">Log in</Link>
+              </Button>
+              <Button asChild variant="primary" size="sm">
+                <Link href="/register">Get Started</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
@@ -187,24 +218,76 @@ export function Header() {
                   {link.name}
                 </Link>
               ))}
-              <div className="h-px bg-white/10 my-4" />
-              <Button asChild variant="primary" className="w-full text-lg h-14">
-                <Link
-                  href="/register"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Get Started
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="w-full text-lg h-14 border-white/10"
-              >
-                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                  Log in
-                </Link>
-              </Button>
+              {session ? (
+                <>
+                  <div className="h-px bg-white/10 my-4" />
+                  <div className="flex items-center gap-3 px-2 mb-4">
+                    <div className="size-10 rounded-full bg-violet-500/10 flex items-center justify-center">
+                      <UserIcon className="size-5 text-violet-400" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-white">
+                        {session.user?.name || "User"}
+                      </span>
+                      <span className="text-xs text-zinc-500">
+                        {session.user?.email}
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="primary"
+                    className="w-full text-lg h-14"
+                    asChild
+                  >
+                    <Link
+                      href="/studio"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <LayoutDashboard className="mr-2 size-5" />
+                      Studio Dashboard
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full text-lg h-14 border-white/10"
+                    onClick={() => {
+                      logout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    <LogOut className="mr-2 size-5" />
+                    Log out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <div className="h-px bg-white/10 my-4" />
+                  <Button
+                    asChild
+                    variant="primary"
+                    className="w-full text-lg h-14"
+                  >
+                    <Link
+                      href="/register"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Get Started
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full text-lg h-14 border-white/10"
+                  >
+                    <Link
+                      href="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Log in
+                    </Link>
+                  </Button>
+                </>
+              )}
             </nav>
           </motion.div>
         )}
