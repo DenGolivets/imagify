@@ -1,14 +1,17 @@
 export const AI_MODELS = {
-  IMAGE: "gemini-2.5-flash-image",
+  IMAGE: "gemini-2.5-flash-preview-05-20",
   TEXT: "meta-llama/llama-4-scout-17b-16e-instruct",
 } as const;
 
 export const GENERATION_LIMITS = {
-  FREE: 5,
-  PRO: 100,
+  FREE: 10,
+  PRO: Infinity,
 } as const;
 
-export const SYSTEM_PROMPTS = {
-  ADVISOR: `You are an expert fashion stylist. Analyze the uploaded photo and provide detailed style advice.`,
-  PROMPT_EXTRACTOR: `Extract a clear image generation prompt from the following style advice.`,
+export const RATE_LIMITS = {
+  GENERATE_PER_MINUTE: 3,
+  ADVISOR_PER_MINUTE: 5,
 } as const;
+
+export const MAX_IMAGE_SIZE_MB = 5;
+export const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];

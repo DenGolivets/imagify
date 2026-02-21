@@ -1,54 +1,84 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { AI_MODELS } from "@/constants/ai";
+import {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-export const geminiModel = genAI.getGenerativeModel({
-  model: AI_MODELS.IMAGE,
+export const geminiFlashModel = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash-preview-05-20",
+  safetySettings: [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+  ],
 });
 
-/**
- * Generates a virtual try-on image by merging a person photo and an item photo.
- */
 export async function generateTryOn(
   userPhotoBase64: string,
-  userPhotoMimeType: string,
   itemPhotoBase64: string,
-  itemPhotoMimeType: string,
-) {
-  const prompt = `
-    You are an AI virtual try-on assistant.
-    The first image is a person. The second image is a clothing item or accessory.
-    Please generate a high-quality image of the person wearing the item.
-    Ensure the fit is natural, the lighting matches, and the person's identity is preserved.
-    Return ONLY the image data.
-  `;
+  userMimeType: string = "image/jpeg",
+  itemMimeType: string = "image/jpeg",
+): Promise<string> {
+  const prompt = `You are a virtual try-on assistant. 
+  The first image is a person's photo. 
+  The second image is a clothing item or accessory.
+  Generate a photorealistic image of the person wearing/using the item from the second image.
+  Preserve the person's face, body proportions, and background exactly.
+  Only change the clothing/accessory to the item shown.
+  Return a high-quality, realistic result.`;
 
-  const result = await geminiModel.generateContent([
-    prompt,
-    {
-      inlineData: {
-        data: userPhotoBase64,
-        mimeType: userPhotoMimeType,
-      },
-    },
-    {
-      inlineData: {
-        data: itemPhotoBase64,
-        mimeType: itemPhotoMimeType,
-      },
-    },
+  const result = await geminiFlashModel.generateContent([
+    { inlineData: { mimeType: userMimeType, data: userPhotoBase64 } },
+    { inlineData: { mimeType: itemMimeType, data: itemPhotoBase64 } },
+    { text: prompt },
   ]);
 
   const response = result.response;
-  return response;
+  // Extract base64 image from response
+  const imagePart = response.candidates?.[0]?.content?.parts?.find(
+    (p) => p.inlineData,
+  );
+  if (!imagePart?.inlineData) throw new Error("No image generated");
+  return `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
 }
 
-/**
- * Generates an image based on a text prompt.
- */
-export async function generateFromPrompt(prompt: string) {
-  const result = await geminiModel.generateContent(prompt);
-  const response = result.response;
-  return response;
+export async function generateFromPrompt(prompt: string): Promise<string> {
+  const enhancedPrompt = `Create a high-quality, photorealistic fashion image: ${prompt}. 
+  Style: editorial fashion photography, professional lighting, sharp details.`;
+
+  const result = await geminiFlashModel.generateContent([
+    { text: enhancedPrompt },
+  ]);
+  const imagePart = result.response.candidates?.[0]?.content?.parts?.find(
+    (p) => p.inlineData,
+  );
+  if (!imagePart?.inlineData) throw new Error("No image generated");
+  return `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
+}
+
+export async function generateFromPhotoWithText(
+  photoBase64: string,
+  description: string,
+  mimeType: string = "image/jpeg",
+): Promise<string> {
+  const prompt = `Edit this photo to match the following description: ${description}.
+  Preserve the person's face and identity. Make the changes look photorealistic and natural.`;
+
+  const result = await geminiFlashModel.generateContent([
+    { inlineData: { mimeType, data: photoBase64 } },
+    { text: prompt },
+  ]);
+
+  const imagePart = result.response.candidates?.[0]?.content?.parts?.find(
+    (p) => p.inlineData,
+  );
+  if (!imagePart?.inlineData) throw new Error("No image generated");
+  return `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
 }
