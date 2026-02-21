@@ -11,25 +11,30 @@ export function HeroDemo() {
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
+    let loopTimer: NodeJS.Timeout;
+    let innerTimer: NodeJS.Timeout;
+
     // Initial 5-second load before first reveal
     const initialTimer = setTimeout(() => {
       setIsGenerating(false);
       setShowResult(true);
 
       // After first reveal, loop: hide → loader 2s → show every 7s
-      const loop = setInterval(() => {
+      loopTimer = setInterval(() => {
         setShowResult(false);
         setIsGenerating(true);
-        setTimeout(() => {
+        innerTimer = setTimeout(() => {
           setIsGenerating(false);
           setShowResult(true);
         }, 2000);
       }, 7000);
-
-      return () => clearInterval(loop);
     }, 5000);
 
-    return () => clearTimeout(initialTimer);
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(loopTimer);
+      clearTimeout(innerTimer);
+    };
   }, []);
 
   return (

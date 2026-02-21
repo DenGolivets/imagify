@@ -6,6 +6,13 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { HeroDemo } from "@/components/home/HeroDemo";
 
 // Lazy load Three.js canvas to avoid SSR issues
@@ -21,7 +28,7 @@ export function HeroSection() {
       <HeroCanvas />
 
       {/* Radial Gradient for depth */}
-      <div className="absolute inset-0 bg-radial-gradient from-violet-600/10 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-radial from-violet-600/10 via-transparent to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -68,14 +75,30 @@ export function HeroSection() {
                   <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button
-                size="lg"
-                variant="glass"
-                className="h-14 px-8 text-lg font-bold border-white/10 text-white hover:bg-white/5"
-              >
-                <Play className="mr-2 size-5 fill-white" />
-                Watch Demo
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    size="lg"
+                    variant="glass"
+                    className="h-14 px-8 text-lg font-bold border-white/10 text-white hover:bg-white/5"
+                  >
+                    <Play className="mr-2 size-5 fill-white" />
+                    Watch Demo
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl bg-zinc-900/95 border-white/10 backdrop-blur-xl p-0 overflow-hidden">
+                  <div className="p-8">
+                    <DialogHeader className="mb-6">
+                      <DialogTitle className="text-2xl font-display font-black text-white">
+                        Interactive Demo
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-950">
+                      <HeroDemo />
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </motion.div>
           </div>
 

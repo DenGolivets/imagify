@@ -50,7 +50,7 @@ export function HowItWorksSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className="relative flex flex-col items-center text-center space-y-6"
+              className="group relative flex flex-col items-center text-center space-y-6"
             >
               <div className="size-20 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center shadow-xl z-10 group-hover:border-violet-500/50 transition-colors">
                 <step.icon className="size-8 text-violet-400" />
