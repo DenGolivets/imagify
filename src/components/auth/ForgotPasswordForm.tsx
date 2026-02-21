@@ -114,7 +114,10 @@ export function ForgotPasswordForm() {
           variant="primary"
         >
           {isLoading ? (
-            <Loader2 className="mr-2 size-4 animate-spin" />
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              Sending...
+            </>
           ) : (
             "Send Reset Link"
           )}

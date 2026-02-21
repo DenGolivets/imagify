@@ -28,10 +28,14 @@ export function RegisterForm() {
   const onSubmit = async (data: RegisterInput) => {
     setIsSubmitting(true);
     try {
+      // Remove confirmPassword from payload
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { confirmPassword, ...payload } = data;
+
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
