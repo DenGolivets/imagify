@@ -76,6 +76,10 @@ export const metadata: Metadata = {
   },
 };
 
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { PageTransition } from "@/components/ui/PageTransition";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -84,9 +88,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${sans.variable} ${display.variable} font-sans antialiased`}
+        className={`${sans.variable} ${display.variable} font-sans antialiased bg-background text-white selection:bg-violet-500/30`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="relative flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1 pt-20">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );

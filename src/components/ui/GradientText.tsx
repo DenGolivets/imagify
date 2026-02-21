@@ -16,7 +16,7 @@ export function GradientText({
   return (
     <span
       className={cn(
-        "bg-gradient-to-r bg-clip-text text-transparent",
+        "bg-linear-to-r bg-clip-text text-transparent",
         from,
         to,
         className,
