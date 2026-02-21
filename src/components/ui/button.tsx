@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         primary:
-          "bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]",
+          "bg-linear-to-r from-violet-600 to-fuchsia-500 text-white hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]",
         secondary:
           "bg-background/20 backdrop-blur-md border border-violet-500/50 text-violet-400 hover:bg-background/30",
         glass:

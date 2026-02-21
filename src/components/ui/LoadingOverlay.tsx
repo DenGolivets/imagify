@@ -22,7 +22,7 @@ export function LoadingOverlay({
         >
           <div className="relative mb-6 h-16 w-16">
             <div className="absolute inset-0 animate-ping rounded-full bg-primary/20" />
-            <div className="absolute inset-0 animate-pulse rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500" />
+            <div className="absolute inset-0 animate-pulse rounded-full bg-linear-to-r from-violet-600 to-fuchsia-500" />
             <div className="absolute inset-6 rounded-full bg-background" />
           </div>
 
@@ -35,7 +35,7 @@ export function LoadingOverlay({
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="font-display text-lg font-medium bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent"
+            className="font-display text-lg font-medium bg-linear-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent"
           >
             {text}
           </motion.p>
