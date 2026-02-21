@@ -2,6 +2,16 @@
 
 > **How to use this file (READ THIS FIRST):**
 >
+> # 🏁 ОСНОВНОЕ ПРАВИЛО:
+>
+> # НИКОГДА НЕ НАЧИНАТЬ СЛЕДУЮЩИЙ ЭТАП, ПОКА Я САМ НЕ СКАЖУ!
+>
+> # 🖼️ ПРАВИЛО ИЗОБРАЖЕНИЙ:
+>
+> # ВСЕГДА использовать `next/image` вместо тега `img`.
+>
+> # Ставить `loading="lazy"`, если блок не виден сразу при загрузке.
+>
 > 1. Give the agent **one stage at a time** — never multiple stages at once.
 > 2. Each stage has `📄 @[doc]` links — the agent **MUST** read those docs **before writing any code** for that stage.
 > 3. After completing every stage, the agent **MUST** open `@[docs/PROGRESS.md]` and:
@@ -41,11 +51,11 @@
 
 **Tasks:**
 
-- [ ] Initialize Next.js 16 latest with TypeScript, Tailwind CSS, App Router, src/ dir, `@/*` alias
+- [x] Initialize Next.js 16 latest with TypeScript, Tailwind CSS, App Router, src/ dir, `@/*` alias
   ```bash
   npx create-next-app@latest ./ --typescript --tailwind --app --src-dir --import-alias "@/*" --eslint --yes
   ```
-- [ ] Install all dependencies:
+- [x] Install all dependencies:
   ```bash
   npm install drizzle-orm drizzle-kit @neondatabase/serverless
   npm install next-auth@beta @auth/drizzle-adapter bcryptjs
@@ -60,21 +70,21 @@
   npm install recharts @tanstack/react-table
   npm install -D @types/bcryptjs @types/three
   ```
-- [ ] Initialize shadcn/ui:
+- [x] Initialize shadcn/ui:
   ```bash
   npx shadcn@latest init
   ```
   Choose: Dark theme, CSS variables, Zinc base color, `src/components/ui` path.
-- [ ] 🎨 **Integrate Custom Colors:** Update the generated `globals.css` and Tailwind config to use the primary/secondary colors and gradients from `@[docs/theme.ts]` and `@[docs/DESIGN_SYSTEM.md]` instead of the default shadcn palette.
-- [ ] Add needed shadcn/ui components:
+- [x] 🎨 **Integrate Custom Colors:** Update the generated `globals.css` and Tailwind config to use the primary/secondary colors and gradients from `@[docs/theme.ts]` and `@[docs/DESIGN_SYSTEM.md]` instead of the default shadcn palette.
+- [x] Add needed shadcn/ui components:
   ```bash
   npx shadcn@latest add button input label card badge tabs dialog sheet tooltip dropdown-menu avatar separator progress skeleton textarea
   ```
-- [ ] Create `.env.local` with all variables from `PROJECT_OVERVIEW.md`
-- [ ] Create `vercel.json` with extended function timeouts (from `DEPLOYMENT.md`)
-- [ ] 🎨 **Move/Verify `theme.ts`** — ensure `docs/theme.ts` (if exists) is moved to `src/styles/theme.ts` and correctly exports the theme tokens.
-- [ ] Run `npx tsc --noEmit` — confirm zero TypeScript errors
-- [ ] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 1 as `✅ Done`, fill in timestamp and tsc result
+- [x] Create `.env.local` with all variables from `PROJECT_OVERVIEW.md`
+- [x] Create `vercel.json` with extended function timeouts (from `DEPLOYMENT.md`)
+- [x] 🎨 **Move/Verify `theme.ts`** — ensure `docs/theme.ts` (if exists) is moved to `src/styles/theme.ts` and correctly exports the theme tokens.
+- [x] Run `npx tsc --noEmit` — confirm zero TypeScript errors
+- [x] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 1 as `✅ Done`, fill in timestamp and tsc result
 
 ---
 
@@ -87,19 +97,19 @@
 
 **Tasks:**
 
-- [ ] Create all empty folders:  
+- [x] Create all empty folders:  
        `src/hooks/`, `src/contexts/`, `src/utils/`, `src/constants/`, `src/types/`, `src/lib/db/queries/`, `src/lib/ai/`, `src/lib/auth/`, `src/lib/validations/`, `src/components/layout/`, `src/components/home/`, `src/components/studio/`, `src/components/generate/`, `src/components/advisor/`, `src/components/wardrobe/`, `src/components/profile/`, `src/components/admin/`
-- [ ] `src/utils/cn.ts` — clsx + tailwind-merge utility
-- [ ] `src/utils/image.ts` — base64 encode/decode/resize helpers, file-to-base64 browser util
-- [ ] `src/utils/format.ts` — date formatter, number formatter, truncate text
-- [ ] `src/constants/routes.ts` — all app route constants
-- [ ] `src/constants/ai.ts` — AI model names, generation limits, accepted types
-- [ ] `src/constants/app.ts` — app name, URL, max file size, plan limits
-- [ ] `src/styles/theme.ts` — ✅ Already created. Verify it's in place.
-- [ ] Update `src/app/globals.css` — map theme tokens to CSS variables, base dark theme, glassmorphism utility classes
-- [ ] Update `tailwind.config.ts` — extend Tailwind with theme color tokens
-- [ ] Run `npx tsc --noEmit` — confirm zero TypeScript errors
-- [ ] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 2 as `✅ Done`, fill in timestamp and tsc result
+- [x] `src/utils/cn.ts` — clsx + tailwind-merge utility
+- [x] `src/utils/image.ts` — base64 encode/decode/resize helpers, file-to-base64 browser util
+- [x] `src/utils/format.ts` — date formatter, number formatter, truncate text
+- [x] `src/constants/routes.ts` — all app route constants
+- [x] `src/constants/ai.ts` — AI model names, generation limits, accepted types
+- [x] `src/constants/app.ts` — app name, URL, max file size, plan limits
+- [x] `src/styles/theme.ts` — ✅ Already created. Verify it's in place.
+- [x] Update `src/app/globals.css` — map theme tokens to CSS variables, base dark theme, glassmorphism utility classes
+- [x] Update `tailwind.config.ts` — extend Tailwind with theme color tokens
+- [x] Run `npx tsc --noEmit` — confirm zero TypeScript errors
+- [x] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 2 as `✅ Done`, fill in timestamp and tsc result
 
 ---
 
@@ -111,17 +121,17 @@
 
 **Tasks:**
 
-- [ ] `src/lib/db/client.ts` — Neon serverless + Drizzle client (from `DATABASE_SCHEMA.md`)
-- [ ] `drizzle/schema.ts` — all tables: `users`, `accounts`, `sessions`, `verification_tokens`, `generations`, `wardrobe_items`, `wardrobe_collections`, `advisor_sessions`
-- [ ] `drizzle/relations.ts` — all Drizzle relations
-- [ ] `drizzle.config.ts` — Drizzle kit config pointing to Neon
-- [ ] Run migration: `npx drizzle-kit push` (dev) or `npx drizzle-kit generate && npx drizzle-kit migrate`
-- [ ] `src/lib/db/queries/users.ts` — `getUserById`, `getUserByEmail`, `createUser`, `updateUser`, `deleteUser`
-- [ ] `src/lib/db/queries/generations.ts` — `createGeneration`, `getGenerationsByUser`, `updateGeneration`
-- [ ] `src/lib/db/queries/wardrobe.ts` — `getWardrobeItems`, `saveToWardrobe`, `getCollections`, `createCollection`, `deleteWardrobeItem`
-- [ ] `src/lib/db/queries/advisor.ts` — `createAdvisorSession`, `getAdvisorHistory`
-- [ ] Run `npx tsc --noEmit` — confirm zero TypeScript errors
-- [ ] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 3 as `✅ Done`, fill in timestamp and tsc result
+- [x] `src/lib/db/client.ts` — Neon serverless + Drizzle client (from `DATABASE_SCHEMA.md`)
+- [x] `drizzle/schema.ts` — all tables: `users`, `accounts`, `sessions`, `verification_tokens`, `generations`, `wardrobe_items`, `wardrobe_collections`, `advisor_sessions`
+- [x] `drizzle/relations.ts` — all Drizzle relations
+- [x] `drizzle.config.ts` — Drizzle kit config pointing to Neon
+- [x] Run migration: `npx drizzle-kit push` (dev) or `npx drizzle-kit generate && npx drizzle-kit migrate`
+- [x] `src/lib/db/queries/users.ts` — `getUserById`, `getUserByEmail`, `createUser`, `updateUser`, `deleteUser`
+- [x] `src/lib/db/queries/generations.ts` — `createGeneration`, `getGenerationsByUser`, `updateGeneration`
+- [x] `src/lib/db/queries/wardrobe.ts` — `getWardrobeItems`, `saveToWardrobe`, `getCollections`, `createCollection`, `deleteWardrobeItem`
+- [x] `src/lib/db/queries/advisor.ts` — `createAdvisorSession`, `getAdvisorHistory`
+- [x] Run `npx tsc --noEmit` — confirm zero TypeScript errors
+- [x] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 3 as `✅ Done`, fill in timestamp and tsc result
 
 ---
 
@@ -134,18 +144,18 @@
 
 **Tasks:**
 
-- [ ] `src/lib/auth/config.ts` — NextAuth config (Credentials + Google providers, jwt/session callbacks) — copy from `AUTH.md`
-- [ ] `src/app/api/auth/[...nextauth]/route.ts` — NextAuth handler
-- [ ] `src/middleware.ts` — route protection middleware (copy from `AUTH.md`, protect `/studio`, `/generate`, `/advisor`, `/wardrobe`, `/profile`, `/admin`)
-- [ ] `src/lib/validations/auth.ts` — Zod schemas: `loginSchema`, `registerSchema`, `forgotPasswordSchema`, `resetPasswordSchema`
-- [ ] `src/app/api/auth/register/route.ts` — registration endpoint (validate → check email → hash password → insert user → return session)
-- [ ] `src/app/api/auth/forgot-password/route.ts`
-- [ ] `src/app/api/auth/reset-password/route.ts`
-- [ ] `src/types/auth.ts` — extended NextAuth types with `role`, `id`
-- [ ] `scripts/seed-admin.ts` — CLI script to create first admin user
-- [ ] `package.json` — add `"db:seed-admin"` script
-- [ ] Run `npx tsc --noEmit` — confirm zero TypeScript errors
-- [ ] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 4 as `✅ Done`, fill in timestamp and tsc result
+- [x] `src/lib/auth/config.ts` — NextAuth config (Credentials + Google providers, jwt/session callbacks) — copy from `AUTH.md`
+- [x] `src/app/api/auth/[...nextauth]/route.ts` — NextAuth handler
+- [x] `src/proxy.ts` — route protection proxy (copy from `AUTH.md`, protect `/studio`, `/generate`, `/advisor`, `/wardrobe`, `/profile`, `/admin`)
+- [x] `src/lib/validations/auth.ts` — Zod schemas: `loginSchema`, `registerSchema`, `forgotPasswordSchema`, `resetPasswordSchema`
+- [x] `src/app/api/auth/register/route.ts` — registration endpoint (validate → check email → hash password → insert user → return session)
+- [x] `src/app/api/auth/forgot-password/route.ts`
+- [x] `src/app/api/auth/reset-password/route.ts`
+- [x] `src/types/auth.ts` — extended NextAuth types with `role`, `id`
+- [x] `scripts/seed-admin.ts` — CLI script to create first admin user
+- [x] `package.json` — add `"db:seed-admin"` script
+- [x] Run `npx tsc --noEmit` — confirm zero TypeScript errors
+- [x] 📋 **Update `@[docs/PROGRESS.md]`** → mark Stage 4 as `✅ Done`, fill in timestamp and tsc result
 
 ---
 
@@ -158,7 +168,7 @@
 
 **Tasks:**
 
-- [ ] `src/app/layout.tsx` — root layout: load Inter + Outfit from `next/font/google`, apply font CSS vars, wrap with providers, global metadata from `SEO.md`
+- [x] `src/app/layout.tsx` — root layout: load Syne + Plus Jakarta Sans from `next/font/google`, apply font CSS vars, wrap with providers, global metadata from `SEO.md`
 - [ ] `src/contexts/ThemeContext.tsx` — theme context (dark mode toggle if needed)
 - [ ] `src/app/providers.tsx` — `QueryClientProvider` (TanStack Query) + Session Provider wrapper client component
 - [ ] `src/app/sitemap.ts` — sitemap (from `SEO.md`)
@@ -204,7 +214,7 @@
 
 **Tasks:**
 
-- [ ] `src/components/layout/Header.tsx` — sticky glassmorphism navbar: Logo, nav links, auth buttons (Login/Register or Avatar dropdown), "Upgrade" badge for free users
+- [ ] `src/components/layout/Header.tsx` — sticky glassmorphism navbar: Logo (Gradient "Imagify" + Swinging Hanger `down_logo.png` on scroll), nav links, auth buttons (Login/Register or Avatar dropdown), "Upgrade" badge for free users
 - [ ] `src/components/layout/MobileNav.tsx` — hamburger → fullscreen slide-in overlay menu (Framer Motion)
 - [ ] `src/components/layout/Footer.tsx` — dark footer with links, social icons, branding
 - [ ] `src/components/layout/AdminSidebar.tsx` — sidebar nav for admin panel (Dashboard, Users, Generations, Analytics, Logout)

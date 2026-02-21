@@ -24,8 +24,10 @@ export const users = pgTable("users", {
   image: text("image"), // Profile photo URL
   role: varchar("role", { length: 20 }).default("user").notNull(), // 'user' | 'admin'
   plan: varchar("plan", { length: 20 }).default("free").notNull(), // 'free' | 'pro'
-  generationsCount: integer("generations_count").default(0).notNull(),
-  generationsLimit: integer("generations_limit").default(10).notNull(),
+
+  // Token System
+  tokens: integer("tokens").default(50).notNull(), // 50 for users, 1000 for admins
+
   emailVerified: timestamp("email_verified"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

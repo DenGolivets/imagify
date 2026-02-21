@@ -156,9 +156,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 ---
 
-## 🚧 Middleware — Route Protection
+## 🚧 Proxy — Route Protection
 
-File: `src/middleware.ts`
+File: `src/proxy.ts`
 
 ```typescript
 import { auth } from "@/lib/auth/config";

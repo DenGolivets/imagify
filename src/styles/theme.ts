@@ -56,8 +56,8 @@ export const Colors = {
 } as const;
 
 export const Typography = {
-  fontSans: "var(--font-inter)",
-  fontDisplay: "var(--font-outfit)",
+  fontSans: "var(--font-sans)",
+  fontDisplay: "var(--font-display)",
 
   // ─── Size Scale ────────────────────────────────────────────────────────────
   xs: "0.75rem",

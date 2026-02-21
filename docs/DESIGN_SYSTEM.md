@@ -4,7 +4,8 @@
 
 **Name:** Imagify  
 **Tagline:** "Try it on before you buy it."  
-**Aesthetic:** Dark luxury fashion — deep blacks + electric purple/violet gradients, glass morphism panels, subtle neon accents  
+**Aesthetic:** Dark luxury fashion — deep blacks + electric purple/violet gradients, glass morphism panels, subtle neon accents
+**Logo:** Gradient text "Imagify" with a hanging hanger icon (`down_logo.png`) below it that reacts to scroll.
 **Mood:** Premium, futuristic, editorial fashion magazine meets cutting-edge AI tech
 
 ---
@@ -72,28 +73,11 @@ export const Colors = {
 } as const;
 
 export const Typography = {
-  fontSans: "var(--font-inter)", // Inter — body text
-  fontDisplay: "var(--font-outfit)", // Outfit — headings, display
-
-  // Scale (rem)
-  xs: "0.75rem", // 12px
-  sm: "0.875rem", // 14px
-  base: "1rem", // 16px
-  lg: "1.125rem", // 18px
-  xl: "1.25rem", // 20px
-  "2xl": "1.5rem", // 24px
-  "3xl": "1.875rem", // 30px
-  "4xl": "2.25rem", // 36px
-  "5xl": "3rem", // 48px
-  "6xl": "3.75rem", // 60px
-  "7xl": "4.5rem", // 72px
+  fontSans: "var(--font-sans)", // Plus Jakarta Sans
+  fontDisplay: "var(--font-display)", // Syne
 
   // Weights
-  normal: "400",
-  medium: "500",
-  semibold: "600",
-  bold: "700",
-  extrabold: "800",
+  // ...
   black: "900",
 } as const;
 
@@ -155,15 +139,15 @@ export const Breakpoints = {
 
 **Fonts (Google Fonts):**
 
-- **Outfit** — Display/Headings: Bold, impactful, modern geometric
-- **Inter** — Body text: Clean, highly readable, widely used
+- **Syne** — Display/Headings: Ultra-modern, avant-garde geometric (High-fashion aesthetic)
+- **Plus Jakarta Sans** — Body text: Professional, modern, and highly legible with a premium feel
 
 ```typescript
 // src/app/layout.tsx
-import { Inter, Outfit } from "next/font/google";
+import { Plus_Jakarta_Sans, Syne } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
+const sans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans" });
+const display = Syne({ subsets: ["latin"], variable: "--font-display" });
 ```
 
 **Heading Scale:**
@@ -298,3 +282,11 @@ type ButtonSize = "sm" | "md" | "lg" | "xl";
 - Wardrobe grid: 2 columns → 3 → 4
 - Profile: card stack on mobile vs. sidebar layout on desktop
 - All modals: bottom sheet on mobile, centered dialog on desktop
+
+---
+
+## ⚡ Performance & Implementation Standards
+
+- **Images**: Always use Next.js `<Image />` component for optimization. Use standard `img` only if technically impossible (e.g. very specific third-party library constraints).
+- **Loading**: Use `loading="lazy"` for any image or heavy component that is not "above the fold" (not visible immediately on page load).
+- **Animations**: Prefer `Framer Motion` for layout and state animations, CSS for simple hover/active effects.
